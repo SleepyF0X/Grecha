@@ -1,6 +1,6 @@
 ﻿/* Set the width of the side navigation to 250px */
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("mySidenav").style.width = "300px";
     document.getElementById("bg-blackout").style.display = "block";
     $("#bg-blackout").animate({ opacity: 0.4 }, 500);
 }
