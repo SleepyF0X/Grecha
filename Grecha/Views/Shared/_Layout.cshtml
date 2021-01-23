@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="~/libs/bootstrap/bootstrap.min.css" />
 </head>
 <body>
-<nav class="navbar navbar-expand navbar-dark bg-primary d-flex justify-content-center">
+<div class="navbar navbar-expand navbar-dark bg-primary d-flex justify-content-center fixed-top">
     <h1 class="text-white" href="#">Grecha</h1>
-</nav>
+</div>
 <div class="bg-white">
-    <div class="container bg-light mt-2">
+    <div class="container-lg bg-light" style="margin-top: 105px;">
         @RenderBody()
     </div>
 </div>
     <script src="~/libs/jquery/jquery.min.js"></script>
-    <script src="~/libs/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="~/libs/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="https://use.fontawesome.com/a8cab3c6a3.js"></script>
 </body>
 </html>
