@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL;
+using Grecha.Parsing;
+using Grecha.Parsing.ParserContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -25,6 +27,7 @@ namespace Grecha
         {
             var connectionString = Configuration.GetConnectionString("Develop");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<IParserContext, ParserContext>();
             services.AddControllersWithViews();
             //services.AddHostedService<ParserTimer>(); Add Timer for parse data every 7 days
         }
