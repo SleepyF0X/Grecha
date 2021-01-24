@@ -25,7 +25,7 @@ namespace Grecha.Parsing
                 product.Shop = "atb";
                 var link = htmlNode.QuerySelector("div.product-detail > a").GetAttributeValue("href", string.Empty);
                 var res = link.Split("/");
-                product.ShopId = Int32.Parse(res.Last());
+                product.IdFromShop = Int32.Parse(res.Last());
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;
                 var price = htmlNode.QuerySelector(".price").InnerText;
                 price = price.Insert(price.Length - 2, ",");
