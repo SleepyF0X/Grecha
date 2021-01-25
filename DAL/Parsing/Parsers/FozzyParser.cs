@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using DAL.Models;
 using DAL.Parsing.Parsers;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 
-namespace Grecha.Parsing
+namespace DAL.Parsing.Parsers
 {
     public class FozzyParser : IParser
     {
@@ -20,20 +17,26 @@ namespace Grecha.Parsing
             var document = html.DocumentNode;
             var allPages = document.QuerySelectorAll(".page-list > li");
             List<int> numbers = new List<int>();
-            int numberOfPages;
+            int numberOfPages = 1;
 
             
-            //foreach (var page in allPages)
-            //{
-            //    if (!page.QuerySelector("a").InnerText.Equals(""))
-            //    {
-            //        numbers.Add(Convert.ToInt32(page.QuerySelector("a").InnerText.Replace(" ", "")));
-            //    }
-            //}
-            //numberOfPages = numbers.Max();
+            foreach (var page in allPages)
+            {
+                
+                if (page.QuerySelector("a > i") == null && page.QuerySelector("span") == null)
+                {
+                    numbers.Add(Convert.ToInt32(page.QuerySelector("a").InnerText));
+                }
+                
+            }
+
+            if(numbers.Count != 0)
+                numberOfPages = numbers.Max();
 
             List<Product> products = new List<Product>();
-            for (int i = 1; i <= 4; i++) //
+            bool isAble = true;
+
+            for (int i = 1; i <= numberOfPages; i++) 
             {
                 html = htmlWeb.Load("https://fozzyshop.ua/ru/search?controller=search&page=" + i + "&s=" + keyword);
                 document = html.DocumentNode;
@@ -51,10 +54,18 @@ namespace Grecha.Parsing
                         product.TradeMark = elem.QuerySelector(".product-brand > a").InnerText;
                         var htmlPrice = elem.QuerySelector(".product-price").Attributes["content"].Value.Replace(".",",");
                         product.Price = Convert.ToDouble(htmlPrice);
+                        product.Img = elem.QuerySelector(".thumbnail-container > a > img").Attributes["src"].Value;
 
                         products.Add(product);
                     }
+                    else
+                    {
+                        isAble = false;
+                        break;
+                    }
                 }
+                if(!isAble)
+                    break;
             }
 
             return products;
