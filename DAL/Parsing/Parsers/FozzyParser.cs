@@ -55,7 +55,8 @@ namespace DAL.Parsing.Parsers
                         var htmlPrice = elem.QuerySelector(".product-price").Attributes["content"].Value.Replace(".",",");
                         product.Price = Convert.ToDouble(htmlPrice);
                         product.Img = elem.QuerySelector(".thumbnail-container > a > img").Attributes["src"].Value;
-
+                        product.Link= elem.QuerySelector(".product-title > a")
+                            .GetAttributeValue("href", string.Empty);
                         products.Add(product);
                     }
                     else
