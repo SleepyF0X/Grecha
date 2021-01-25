@@ -15,6 +15,7 @@ namespace DAL.DbContext
     {
         private static IConfiguration _configuration;
         private static IParserContext _parserContext;
+
         public static async Task InitializeAsync(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -49,7 +50,7 @@ namespace DAL.DbContext
                 }
 
                 await context.SaveChangesAsync();
-                Thread.Sleep(50000);
+                Thread.Sleep(300000);
             }
         }
 

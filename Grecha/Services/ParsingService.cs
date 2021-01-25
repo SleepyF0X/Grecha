@@ -15,6 +15,7 @@ namespace Grecha.Services
         {
             _configuration = configuration;
         }
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await AppDbContextInit.InitializeAsync(_configuration);
