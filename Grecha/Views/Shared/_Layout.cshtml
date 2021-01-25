@@ -6,6 +6,10 @@
     <title>Grecha</title>
     <link rel="stylesheet" href="~/libs/bootstrap/bootstrap.min.css" />
     <link href="~/css/StyleSheet.css" rel="stylesheet" />
+    <script src="~/libs/jquery/jquery.min.js"></script>
+    <script src="~/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="https://use.fontawesome.com/a8cab3c6a3.js"></script>
+    <script src="~/js/JavaScript.js"></script>
 </head>
 
 <body>
@@ -31,14 +35,10 @@
     <div class="col-2"></div>
 </div>
 
-<div class="bg-white">
+<div class="bg-white" style="background-image: url('@Url.Content("~/img/background.jpg")'); background-attachment: fixed; background-size: 100% 1080px;">
     <div class="container-lg bg-light" style="padding-top: 105px;">
         @RenderBody()
     </div>
 </div>
-<script src="~/libs/jquery/jquery.min.js"></script>
-<script src="~/libs/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="https://use.fontawesome.com/a8cab3c6a3.js"></script>
-<script src="~/js/JavaScript.js"></script>
 </body>
 </html>
