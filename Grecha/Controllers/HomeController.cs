@@ -2,29 +2,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL;
-using Grecha.Parsing.ParserContext;
-using Grecha.Parsing.Parsers;
+using DAL.DbContext;
+using DAL.Parsing.ParserContext;
+using DAL.Parsing.Parsers;
 
 namespace Grecha.Controllers
 {
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IParserContext _parserContext;
 
-        public HomeController(AppDbContext context, IParserContext parserContext)
+        public HomeController(AppDbContext context)
         {
             _context = context;
-            _parserContext = parserContext;
         }
 
         // GET: Home
         public async Task<IActionResult> Index()
         {
-            _parserContext.SetParsingStrategy(new AtbParser());
-            var products = _parserContext.Parse("крупа", 20, null);
-            var a = 1;
-            return View(await _context.Products.ToListAsync());
+            var products = await _context.Products.ToListAsync();
+            return View(products);
         }
 
         // GET: Home/Details/5

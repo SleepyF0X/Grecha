@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using DAL.Models;
-using Grecha.Parsing.Parsers;
+using DAL.Parsing.Parsers;
 
-namespace Grecha.Parsing.ParserContext
+namespace DAL.Parsing.ParserContext
 {
-    public sealed class ParserContext : IParserContext
+    internal sealed class ParserContext : IParserContext
     {
         public IParser Parser { get; private set; }
 

@@ -5,9 +5,9 @@ using DAL.Models;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 
-namespace Grecha.Parsing.Parsers
+namespace DAL.Parsing.Parsers
 {
-    public sealed class AtbParser : IParser
+    internal sealed class AtbParser : IParser
     {
         public IEnumerable<Product> Parse(string keyword, int? limit = int.MaxValue, int? offset = 0)
         {
@@ -24,6 +24,7 @@ namespace Grecha.Parsing.Parsers
                     StoreName = "ATB"
                 };
                 var link = htmlNode.QuerySelector("div.product-detail > a").GetAttributeValue("href", string.Empty);
+                product.Link = "https://zakaz.atbmarket.com"+link;
                 var res = link.Split("/");
                 product.IdFromStore = int.Parse(res.Last());
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;

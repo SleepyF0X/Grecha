@@ -2,7 +2,7 @@
 
 namespace DAL.Models
 {
-    public class Product
+    public sealed class Product
     {
         public int Id { get; set; }
         [Required] public string StoreName { get; set; }
@@ -11,5 +11,6 @@ namespace DAL.Models
         [Required] public string TradeMark { get; set; }
         public double Price { get; set; } //TODO switch to the fixed point
         public string PhotoPath { get; set; }
+        [Required] public string Link { get; set; }
     }
 }
