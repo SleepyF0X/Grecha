@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DAL.DbContext;
 using DAL.Parsing.ParserContext;
+using Grecha.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -22,7 +23,7 @@ namespace Grecha
             var connectionString = Configuration.GetConnectionString("Develop");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
-            //services.AddHostedService<ParserTimer>(); Add Timer for parse data every 7 days
+            services.AddHostedService<ParsingService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,7 +43,6 @@ namespace Grecha
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            AppDbContextInit.InitializeAsync(app.ApplicationServices, Configuration).Wait();
             //Parser.Initialize(app.ApplicationServices); Add Parsing data, if last parse more than 7 days ago or Database Empty 
         }
     }

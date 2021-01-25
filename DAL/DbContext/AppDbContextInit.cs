@@ -8,33 +8,36 @@ using DAL.Parsing.ParserContext;
 using DAL.Parsing.Parsers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DAL.DbContext
 {
     public static class AppDbContextInit
     {
-        public static async Task InitializeAsync(IServiceProvider serviceProvider, IConfiguration configuration)
+        private static IConfiguration _configuration;
+        private static IParserContext _parserContext;
+        public static async Task InitializeAsync(IConfiguration configuration)
         {
-            using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            var parserContext = new ParserContext();
+            _configuration = configuration;
+            var optionsBuilderService = new OptionsBuilderService<AppDbContext>(_configuration);
+            var options = optionsBuilderService.BuildOptions();
+            await using var context = new AppDbContext(options);
+            _parserContext = new ParserContext();
             await context.Database.MigrateAsync();
-            LaunchThread(parserContext, configuration);
+            LaunchThread();
         }
 
-        private static void LaunchThread(IParserContext parserContext, IConfiguration configuration)
+        private static void LaunchThread()
         {
-            var threadStart = new ThreadStart(async () => await CheckParsingTime(parserContext, configuration));
+            var threadStart = new ThreadStart(async () => await CheckParsingTime());
             var thread = new Thread(threadStart);
             thread.Start();
         }
 
-        private static async Task CheckParsingTime(IParserContext parserContext, IConfiguration configuration)
+        private static async Task CheckParsingTime()
         {
             while (true)
             {
-                var optionsBuilderService = new OptionsBuilderService<AppDbContext>(configuration);
+                var optionsBuilderService = new OptionsBuilderService<AppDbContext>(_configuration);
                 var options = optionsBuilderService.BuildOptions();
                 await using var context = new AppDbContext(options);
                 var productsExist = await context.Products.AnyAsync();
@@ -42,7 +45,7 @@ namespace DAL.DbContext
                 var weekExpired = storeParsingDates.Any(e => (e.LastParsingDate - DateTimeOffset.UtcNow).Days < 0);
                 if (!productsExist || weekExpired)
                 {
-                    await ParseATBProducts(context, parserContext);
+                    await ParseATBProducts(context);
                 }
 
                 await context.SaveChangesAsync();
@@ -50,7 +53,7 @@ namespace DAL.DbContext
             }
         }
 
-        private static async Task ParseATBProducts(AppDbContext context, IParserContext parserContext)
+        private static async Task ParseATBProducts(AppDbContext context)
         {
             var productsFromATBToDelete =
                 await context.Products.Where(e => e.StoreName.ToLower().Equals("ATB".ToLower())).ToListAsync();
@@ -59,8 +62,8 @@ namespace DAL.DbContext
                 context.Products.RemoveRange(productsFromATBToDelete);
             }
 
-            parserContext.SetParsingStrategy(new AtbParser());
-            var productsFromATBToAdd = parserContext.Parse("крупа", 20, null);
+            _parserContext.SetParsingStrategy(new AtbParser());
+            var productsFromATBToAdd = _parserContext.Parse("крупа", 20, null);
             await context.Products.AddRangeAsync(productsFromATBToAdd);
             var lastParsingDate = await context.StoreParsingDates
                 .Where(e => e.StoreName.ToLower().Equals("ATB".ToLower()))
