@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DAL.DbContext;
+using DAL.Helpers;
 using DAL.Parsing.ParserContext;
 using Grecha.Services;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace Grecha
             var connectionString = Configuration.GetConnectionString("Develop");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
+            services.AddTransient<IOptionsBuilderService<AppDbContext>, OptionsBuilderService<AppDbContext>>();
             services.AddHostedService<ParsingService>();
         }
 

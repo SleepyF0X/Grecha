@@ -7,21 +7,18 @@ using DAL.Models;
 using DAL.Parsing.ParserContext;
 using DAL.Parsing.Parsers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DAL.DbContext
 {
     public static class AppDbContextInit
     {
-        private static IConfiguration _configuration;
         private static IParserContext _parserContext;
+        private static DbContextOptions<AppDbContext> _options;
 
-        public static async Task InitializeAsync(IConfiguration configuration)
+        public static async Task InitializeAsync(IOptionsBuilderService<AppDbContext> optionsBuilderService)
         {
-            _configuration = configuration;
-            var optionsBuilderService = new OptionsBuilderService<AppDbContext>(_configuration);
-            var options = optionsBuilderService.BuildOptions();
-            await using var context = new AppDbContext(options);
+            _options = optionsBuilderService.BuildDefaultOptions();
+            await using var context = new AppDbContext(_options);
             _parserContext = new ParserContext();
             await context.Database.MigrateAsync();
             LaunchThread();
@@ -38,9 +35,7 @@ namespace DAL.DbContext
         {
             while (true)
             {
-                var optionsBuilderService = new OptionsBuilderService<AppDbContext>(_configuration);
-                var options = optionsBuilderService.BuildOptions();
-                await using var context = new AppDbContext(options);
+                await using var context = new AppDbContext(_options);
                 var productsExist = await context.Products.AnyAsync();
                 var storeParsingDates = await context.StoreParsingDates.ToListAsync();
                 var weekExpired = storeParsingDates.Any(e => (e.LastParsingDate - DateTimeOffset.UtcNow).Days < 0);

@@ -2,23 +2,23 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DAL.DbContext;
-using Microsoft.Extensions.Configuration;
+using DAL.Helpers;
 using Microsoft.Extensions.Hosting;
 
 namespace Grecha.Services
 {
     public sealed class ParsingService : IHostedService
     {
-        private readonly IConfiguration _configuration;
+        private readonly IOptionsBuilderService<AppDbContext> _optionsBuilderService;
 
-        public ParsingService(IConfiguration configuration)
+        public ParsingService(IOptionsBuilderService<AppDbContext> optionsBuilderService)
         {
-            _configuration = configuration;
+            _optionsBuilderService = optionsBuilderService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await AppDbContextInit.InitializeAsync(_configuration);
+            await AppDbContextInit.InitializeAsync(_optionsBuilderService);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

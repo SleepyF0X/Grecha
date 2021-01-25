@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DAL.Helpers
 {
-    internal sealed class OptionsBuilderService<T> where T : Microsoft.EntityFrameworkCore.DbContext
+    public sealed class OptionsBuilderService<T> : IOptionsBuilderService<T> where T: Microsoft.EntityFrameworkCore.DbContext
     {
         private readonly IConfiguration _configuration;
 
@@ -12,7 +12,7 @@ namespace DAL.Helpers
             _configuration = configuration;
         }
 
-        public DbContextOptions<T> BuildOptions()
+        public DbContextOptions<T> BuildDefaultOptions()
         {
             var optBuilder = new DbContextOptionsBuilder<T>();
             optBuilder.UseSqlServer(_configuration.GetConnectionString("Develop"));
