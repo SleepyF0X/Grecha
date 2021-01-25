@@ -1,9 +1,11 @@
-﻿@* Breadcrumb *@
+﻿@model List<DAL.Models.Product>
+
+@* Breadcrumb *@
 <div>
     <ol class="breadcrumb mb-0 pb-2">
         <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Library</a></li>
-        <li class="breadcrumb-item active">Data</li>
+        <li class="breadcrumb-item"><a href="#">Bakaleya</a></li>
+        <li class="breadcrumb-item active">Grecha</li>
     </ol>
     <hr class="mt-0" />
 </div>
@@ -11,5 +13,42 @@
 <div class="">
     <div class="text-center">
         <h2>Products</h2>
+    </div>
+    @* Filter *@
+    <div class="d-flex justify-content-end align-items-center mb-md-2 mb-1">
+        <i class="fa fa-filter fa-3x mr-1" aria-hidden="true"></i>
+        <div class="form-group mb-0">
+            <select class="custom-select">
+                <option selected="">Order by...</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+    </div>
+    @* Products *@
+    <div class="d-flex flex-wrap justify-content-around">
+        @foreach(var product in Model) {
+            <div class="card border-secondary mb-3 col-10 col-xl-4 col-md-6 col-lg-4" style="max-width: 19rem;">
+                @*<div class="card-header">Header</div>*@
+                <div class="card-body">
+                    <div class="text-center img-thumbnail d-flex align-items-center justify-content-center mb-2" style="height: 245px;">
+                        <img src="https://polezzno.com/image/cache/data/krupa%20semena/zelenaya_grechka_300g_kz-600x600.jpg" class="img-fluid mb-1" alt="Alternate Text" style="max-height: 240px;"/>
+                    </div>
+                    <h4 class="card-title">@product.Name</h4>
+                    <p class="card-text">
+                        <span class="font-weight-bold">Manufacturer:</span> @product.TradeMark
+                        <br/>
+                        <span class="font-weight-bold">Store:</span> @product.Shop
+                    </p>
+                    <div class="text-center">
+                        <h5>$ @product.Price</h5>
+                    </div>
+                    <div class="text-center">
+                        <a href="@product.Link" class="btn btn-sm btn-outline-primary">View details</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
