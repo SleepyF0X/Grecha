@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Globalization;
 using System.Linq;
 using DAL.Models;
@@ -9,6 +11,8 @@ namespace DAL.Parsing.Parsers
 {
     internal sealed class AtbParser : IParser
     {
+        private const string ShopUrl = "https://zakaz.atbmarket.com";
+
         public IEnumerable<Product> Parse(string keyword, int? limit = int.MaxValue, int? offset = 0)
         {
             var htmlWeb = new HtmlWeb();
@@ -23,14 +27,19 @@ namespace DAL.Parsing.Parsers
                 {
                     Shop = "ATB"
                 };
-                var link = htmlNode.QuerySelector("div.product-detail > a").GetAttributeValue("href", string.Empty);
-                product.Link = "https://zakaz.atbmarket.com"+link;
-                var res = link.Split("/");
+                var link = htmlNode.QuerySelector("div.product-detail > a")
+                    .GetAttributeValue("href", string.Empty);
+
+                product.Link = ShopUrl + link;
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;
                 var price = htmlNode.QuerySelector(".price").InnerText;
                 price = price.Insert(price.Length - 2, ",");
                 product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
-                product.TradeMark = GetTrademark("https://zakaz.atbmarket.com" + link);
+                product.TradeMark = GetTrademark(ShopUrl + link);
+                var styleStr = htmlNode.QuerySelector(".bg-size").GetAttributeValue("style", string.Empty);
+                styleStr = styleStr.Substring(styleStr.IndexOf("\"", StringComparison.Ordinal));
+                styleStr = styleStr.Substring(0, styleStr.IndexOf("\"", StringComparison.Ordinal));
+                product.Img = styleStr;
                 list.Add(product);
             }
 
