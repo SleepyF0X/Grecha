@@ -29,6 +29,9 @@ namespace DAL.Migrations
                     b.Property<int>("IdFromStore")
                         .HasColumnType("int");
 
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Link")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -37,13 +40,10 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhotoPath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("StoreName")
+                    b.Property<string>("Shop")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

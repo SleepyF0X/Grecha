@@ -21,7 +21,7 @@ namespace DAL.Parsing.Parsers
             {
                 var product = new Product
                 {
-                    StoreName = "ATB"
+                    Shop = "ATB"
                 };
                 var link = htmlNode.QuerySelector("div.product-detail > a").GetAttributeValue("href", string.Empty);
                 product.Link = "https://zakaz.atbmarket.com"+link;

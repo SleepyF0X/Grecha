@@ -52,7 +52,7 @@ namespace DAL.DbContext
         private static async Task ParseATBProducts(AppDbContext context)
         {
             var productsFromATBToDelete =
-                await context.Products.Where(e => e.StoreName.ToLower().Equals("ATB".ToLower())).ToListAsync();
+                await context.Products.Where(e => e.Shop.ToLower().Equals("ATB".ToLower())).ToListAsync();
             if (productsFromATBToDelete.Count != 0)
             {
                 context.Products.RemoveRange(productsFromATBToDelete);
