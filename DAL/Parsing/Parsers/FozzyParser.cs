@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using DAL.Models;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 
-namespace Grecha.Parsing
+namespace DAL.Parsing.Parsers
 {
     public class FozzyParser : IParser
     {
-        public List<Product> Parse(string keyword, int? limit = Int32.MaxValue, int? offset = 0)
+        public IEnumerable<Product> Parse(string keyword, int? limit = Int32.MaxValue, int? offset = 0)
         {
             var htmlWeb = new HtmlWeb();
             var html = htmlWeb.Load("https://fozzyshop.ua/ru/search?controller=search&s=" + keyword);
@@ -40,7 +37,7 @@ namespace Grecha.Parsing
 
             for (int i = 1; i <= numberOfPages; i++) 
             {
-                html = htmlWeb.Load("https://fozzyshop.ua/ru/search?controller=search&page=" + i + "&s=" + keyword);///
+                html = htmlWeb.Load("https://fozzyshop.ua/ru/search?controller=search&page=" + i + "&s=" + keyword);
                 document = html.DocumentNode;
                 var list = document.QuerySelectorAll(".js-product-miniature-wrapper");
 
