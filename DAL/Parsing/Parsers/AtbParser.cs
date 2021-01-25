@@ -21,12 +21,11 @@ namespace DAL.Parsing.Parsers
             {
                 var product = new Product
                 {
-                    StoreName = "ATB"
+                    Shop = "ATB"
                 };
                 var link = htmlNode.QuerySelector("div.product-detail > a").GetAttributeValue("href", string.Empty);
                 product.Link = "https://zakaz.atbmarket.com"+link;
                 var res = link.Split("/");
-                product.IdFromStore = int.Parse(res.Last());
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;
                 var price = htmlNode.QuerySelector(".price").InnerText;
                 price = price.Insert(price.Length - 2, ",");
