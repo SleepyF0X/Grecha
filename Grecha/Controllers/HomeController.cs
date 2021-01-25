@@ -1,10 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL;
 using DAL.DbContext;
-using DAL.Parsing.ParserContext;
-using DAL.Parsing.Parsers;
 
 namespace Grecha.Controllers
 {
@@ -22,24 +19,6 @@ namespace Grecha.Controllers
         {
             var products = await _context.Products.ToListAsync();
             return View(products);
-        }
-
-        // GET: Home/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
         }
     }
 }
