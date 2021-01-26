@@ -28,8 +28,12 @@ namespace DAL.Parsing.Parsers
                 var res = link.Split("/");
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;
                 var price = htmlNode.QuerySelector(".price").InnerText;
-                price = price.Insert(price.Length - 2, ",");
-                product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
+                price = price.Insert(price.Length - 2, ".");
+                double priceDouble;
+                if (double.TryParse(price, out priceDouble))
+                {
+                    product.Price = priceDouble;
+                }
                 product.TradeMark = GetTrademark("https://zakaz.atbmarket.com" + link);
                 list.Add(product);
             }
