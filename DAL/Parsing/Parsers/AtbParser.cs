@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using DAL.Models;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
@@ -9,6 +8,8 @@ namespace DAL.Parsing.Parsers
 {
     internal sealed class AtbParser : IParser
     {
+        private const string ShopUrl = "https://zakaz.atbmarket.com";
+
         public IEnumerable<Product> Parse(string keyword, int? limit = int.MaxValue, int? offset = 0)
         {
             var htmlWeb = new HtmlWeb();
@@ -23,18 +24,17 @@ namespace DAL.Parsing.Parsers
                 {
                     Shop = "ATB"
                 };
-                var link = htmlNode.QuerySelector("div.product-detail > a").GetAttributeValue("href", string.Empty);
-                product.Link = "https://zakaz.atbmarket.com"+link;
-                var res = link.Split("/");
+                var link = htmlNode.QuerySelector("div.product-detail > a")
+                    .GetAttributeValue("href", string.Empty);
+
+                product.Link = ShopUrl + link;
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;
                 var price = htmlNode.QuerySelector(".price").InnerText;
-                price = price.Insert(price.Length - 2, ".");
-                double priceDouble;
-                if (double.TryParse(price, out priceDouble))
-                {
-                    product.Price = priceDouble;
-                }
-                product.TradeMark = GetTrademark("https://zakaz.atbmarket.com" + link);
+                price = price.Insert(price.Length - 2, ",");
+                product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
+                product.TradeMark = GetTrademark(ShopUrl + link);
+                var imgSrc = htmlNode.QuerySelector(".img-fluid").Attributes["src"].Value;
+                product.Img = imgSrc;
                 list.Add(product);
             }
 

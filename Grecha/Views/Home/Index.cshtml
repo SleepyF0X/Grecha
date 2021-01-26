@@ -3,11 +3,18 @@
 @* Breadcrumb *@
 <div>
     <ol class="breadcrumb mb-0 pb-2">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Bakaleya</a></li>
-        <li class="breadcrumb-item active">Grecha</li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" asp-controller="Home">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-action="Index" asp-controller="Home">All</a>
+        </li>
+        @if (Context.Request.Query["storeName"].FirstOrDefault() != null)
+        {
+    <li class="breadcrumb-item active">@Context.Request.Query["storeName"].FirstOrDefault()</li>
+        }
     </ol>
-    <hr class="mt-0" />
+    <hr class="mt-0"/>
 </div>
 @* Product List *@
 <div class="">
@@ -28,12 +35,13 @@
     </div>
     @* Products *@
     <div class="d-flex flex-wrap justify-content-around" id="items">
-        @foreach(var product in Model) {
+        @foreach (var product in Model)
+        {
             <div class="card border-secondary mb-3 col-10 col-xl-4 col-md-6 col-lg-4 item" style="max-width: 19rem;">
                 @*<div class="card-header">Header</div>*@
                 <div class="card-body d-flex flex-column">
                     <div class="text-center img-thumbnail d-flex align-items-center justify-content-center mb-2" style="height: 245px;">
-                        <img src="https://polezzno.com/image/cache/data/krupa%20semena/zelenaya_grechka_300g_kz-600x600.jpg" class="img-fluid mb-1" alt="Alternate Text" style="max-height: 240px;"/>
+                        <img src="@product.Img" class="img-fluid mb-1" alt="Alternate Text" style="max-height: 240px;"/>
                     </div>
                     <h4 class="card-title name">@product.Name</h4>
                     <p class="card-text">
@@ -56,27 +64,24 @@
 </div>
 <script>
     function sorting(tag) {
-        if(tag=='price')
-        {
-            var items = $('div.item').sort(function (a, b) {
+        if (tag == 'price') {
+            var items = $('div.item').sort(function(a, b) {
                 var price1 = $('div.price', a).text(),
                     price2 = $('div.price', b).text();
                 if (price1 < price2) return 1;
                 else return -1;
             });
             return items;
-        }
-        else if (tag == 'price reverse') {
-            var items = $('div.item').sort(function (a, b) {
+        } else if (tag == 'price reverse') {
+            var items = $('div.item').sort(function(a, b) {
                 var price1 = $('div.price', a).text(),
                     price2 = $('div.price', b).text();
                 if (price1 > price2) return 1;
                 else return -1;
             });
             return items;
-        }
-        else if (tag == 'name') {
-            var items = $('div.item').sort(function (a, b) {
+        } else if (tag == 'name') {
+            var items = $('div.item').sort(function(a, b) {
                 var name1 = $.trim($('div.name', a).text()),
                     name2 = $.trim($('div.name', b).text());
                 if (name1 < name2) return 1;
@@ -85,7 +90,8 @@
             return items;
         }
     }
-    $('.order').change(function (e) {
+
+    $('.order').change(function(e) {
         e.preventDefault();
         $('div#items').html(sorting($(this).children(":selected").attr("id")));
     });
