@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+    grecha:
+        image: ${DOCKER_REGISTRY-}grecha
+        build:
+            context: .
+            dockerfile: Grecha/Dockerfile
+        depends_on:
+            - ms-sql-server
+        ports:
+            - "8080:80"
+        restart: 
+            on-failure
+    ms-sql-server:
+        image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+        environment:
+            ACCEPT_EULA: "Y"
+            MSSQL_SA_PASSWORD: "The_Best_Pa55"
+            MSSQL_PID: Express
+        ports:
+            - "1433:1433"

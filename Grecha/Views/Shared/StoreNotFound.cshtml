@@ -1,0 +1,9 @@
+﻿@model string
+@if (Model != null)
+{
+    <p class="text-center">Store with name '@Model' was not found.</p>
+}
+else
+{
+    <p class="text-center">Valid store name was not provided.</p>
+}

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Models;
+﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DAL
+namespace DAL.DbContext
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : Microsoft.EntityFrameworkCore.DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<StoreParsingDate> StoreParsingDates { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

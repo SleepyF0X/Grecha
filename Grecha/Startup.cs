@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DAL;
+using DAL.DbContext;
+using DAL.Helpers;
+using DAL.Parsing.ParserContext;
+using Grecha.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -23,10 +21,11 @@ namespace Grecha
         private IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("Develop");
+            var connectionString = Configuration.GetConnectionString("DockerCompose");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
-            //services.AddHostedService<ParserTimer>(); Add Timer for parse data every 7 days
+            services.AddTransient<IOptionsBuilderService<AppDbContext>, OptionsBuilderService<AppDbContext>>();
+            services.AddHostedService<ParsingService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -35,6 +34,7 @@ namespace Grecha
             {
                 app.UseDeveloperExceptionPage();
             }
+
 
             app.UseStaticFiles();
             app.UseRouting();
@@ -45,7 +45,7 @@ namespace Grecha
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            
+
             //Parser.Initialize(app.ApplicationServices); Add Parsing data, if last parse more than 7 days ago or Database Empty 
         }
     }

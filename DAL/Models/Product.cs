@@ -1,6 +1,15 @@
-﻿namespace DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DAL.Models
 {
-    public class Product
+    public sealed class Product
     {
+        public int Id { get; set; }
+        [Required] public string Shop { get; set; }
+        [Required] public string Name { get; set; }
+        [Required] public string TradeMark { get; set; }
+        [Required] public double Price { get; set; } //TODO switch to the fixed point
+        [Required] public string Link { get; set; }
+        public string Img { get; set; }
     }
 }
