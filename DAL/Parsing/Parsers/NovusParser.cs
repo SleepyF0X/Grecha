@@ -1,40 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Dynamic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using DAL.Models;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 namespace DAL.Parsing.Parsers
 {
-    internal sealed class NovusParser : IParser
+    public sealed class NovusParser : IParser
     {
         private const string ShopUrl = "https://novus.zakaz.ua/";
 
         public IEnumerable<Product> Parse(string keyword, int? limit = int.MaxValue, int? offset = 0)
         {
-            var htmlWeb = new HtmlWeb();
-            var html = htmlWeb.Load("https://novus.zakaz.ua/ru/search/?q=" + keyword);
-            var document = html.DocumentNode;
-            var lis = document.QuerySelectorAll("div.products-box__list-item");
+            var httpWebRequest =
+                (HttpWebRequest) WebRequest.Create("https://stores-api.zakaz.ua/stores/48201070/products/search/?q=" +
+                                                   keyword);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "GET";
+            httpWebRequest.Headers.Add("accept-language", "uk");
 
-            var list = new List<Product>();
-            foreach (var htmlNode in lis)
+            var httpResponse = (HttpWebResponse) httpWebRequest.GetResponse();
+            dynamic config;
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                Product product = new Product();
-                product.Shop = "Novus";
-                var link = htmlNode.QuerySelector("div.products-box__list-item > a")
-                    .GetAttributeValue("href", string.Empty);
-                product.Link = link;
-                product.Name = htmlNode.QuerySelector("div.products-box__list-item .product_tile_title").InnerText;
-                var price = htmlNode.QuerySelector(".Price__value_caption").InnerText;
-                product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
-                product.Img = htmlNode.QuerySelector(".product-tile__image-i").GetAttributeValue("src", string.Empty);
-                product.TradeMark = GetTrademark(ShopUrl + link);
-                list.Add(product);
+                var result = streamReader.ReadToEnd();
+                config = JsonConvert.DeserializeObject<ExpandoObject>(result, new ExpandoObjectConverter());
             }
 
+            var list = new List<Product>();
+            foreach (var elem in config.results)
+            {
+                var product = new Product();
+                product.Name = elem.title;
+                product.Link = elem.web_url;
+                product.Img = elem.img.s350x350;
+                product.Price = ((double) elem.price) / 100;
+                product.TradeMark = elem.producer.trademark;
+                product.Shop = "novus";
+                
+                list.Add(product);
+            }
+            
+            
             return list;
         }
 
