@@ -15,7 +15,7 @@ namespace DAL.Helpers
         public DbContextOptions<T> BuildDefaultOptions()
         {
             var optBuilder = new DbContextOptionsBuilder<T>();
-            optBuilder.UseSqlServer(_configuration.GetConnectionString("Develop"));
+            optBuilder.UseSqlServer(_configuration.GetConnectionString("Docker"));
             return optBuilder.Options;
         }
     }
