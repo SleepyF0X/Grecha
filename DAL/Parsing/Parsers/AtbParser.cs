@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using DAL.Models;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
@@ -36,10 +33,8 @@ namespace DAL.Parsing.Parsers
                 price = price.Insert(price.Length - 2, ",");
                 product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
                 product.TradeMark = GetTrademark(ShopUrl + link);
-                var styleStr = htmlNode.QuerySelector(".img-fluid").Attributes["src"].Value;
-                styleStr = styleStr.Substring(styleStr.IndexOf("\"", StringComparison.Ordinal));
-                styleStr = styleStr.Substring(0, styleStr.IndexOf("\"", StringComparison.Ordinal));
-                product.Img = styleStr;
+                var imgSrc = htmlNode.QuerySelector(".img-fluid").Attributes["src"].Value;
+                product.Img = imgSrc;
                 list.Add(product);
             }
 

@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Dynamic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using DAL.Models;
 using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 
 namespace DAL.Parsing.Parsers
 {
     public sealed class NovusParser : IParser
     {
-        private const string ShopUrl = "https://novus.zakaz.ua/";
-
         public IEnumerable<Product> Parse(string keyword, int? limit = int.MaxValue, int? offset = 0)
         {
             var httpWebRequest =
@@ -41,18 +32,20 @@ namespace DAL.Parsing.Parsers
             var list = new List<Product>();
             foreach (var elem in config.results)
             {
-                var product = new Product();
-                product.Name = elem.title;
-                product.Link = elem.web_url;
-                product.Img = elem.img.s350x350;
-                product.Price = ((double) elem.price) / 100;
-                product.TradeMark = elem.producer.trademark;
-                product.Shop = "novus";
-                
+                var product = new Product
+                {
+                    Name = elem.title,
+                    Link = elem.web_url,
+                    Img = elem.img.s350x350,
+                    Price = (double) elem.price / 100,
+                    TradeMark = elem.producer.trademark,
+                    Shop = "Novus"
+                };
+
                 list.Add(product);
             }
-            
-            
+
+
             return list;
         }
 

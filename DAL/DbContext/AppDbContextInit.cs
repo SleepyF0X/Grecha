@@ -41,12 +41,12 @@ namespace DAL.DbContext
                 var weekExpired = storeParsingDates.Any(e => (e.LastParsingDate - DateTimeOffset.UtcNow).Days < 0);
                 if (!productsExist || weekExpired)
                 {
-                    //await ParseProducts(context, "ATB", "крупа гречнева", new AtbParser());
-                    //await context.SaveChangesAsync();
+                    await ParseProducts(context, "ATB", "гречана+ядриця", new AtbParser());
+                    await context.SaveChangesAsync();
                     await ParseProducts(context, "Novus", "Крупа гречневая", new NovusParser());
                     await context.SaveChangesAsync();
-                    //await ParseProducts(context, "Fozzy", "Крупа гречневая", new FozzyParser());
-                    //await context.SaveChangesAsync();
+                    await ParseProducts(context, "Fozzy", "Крупа гречневая", new FozzyParser());
+                    await context.SaveChangesAsync();
                 }
 
                

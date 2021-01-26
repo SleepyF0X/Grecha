@@ -21,11 +21,25 @@ namespace Grecha.Controllers
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
-        
+
         public async Task<IActionResult> GetProducts(string storeName)
         {
-            var products = await _context.Products.Where(e => e.Shop.ToLower().Equals(storeName.ToLower())).ToListAsync();
-            return View("Index", products);
+            if (storeName == null)
+            {
+                return View("StoreNotFound", null);
+            }
+            var storeExists =
+                await _context.StoreParsingDates.AnyAsync(e => e.StoreName.ToLower().Equals(storeName.ToLower()));
+            if (!storeExists)
+            {
+                return View("StoreNotFound", storeName);
+            }
+            else
+            {
+                var products = await _context.Products.Where(e => e.Shop.ToLower().Equals(storeName.ToLower()))
+                    .ToListAsync();
+                return View("Index", products);
+            }
         }
     }
 }
