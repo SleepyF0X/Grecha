@@ -44,8 +44,7 @@ namespace DAL.Parsing.Parsers
                                 .GetAttributeValue("href", string.Empty)),
                             TradeMark = elem.QuerySelector(".product-brand > a").InnerText
                         };
-                        var htmlPrice = elem.QuerySelector(".product-price").Attributes["content"].Value
-                            .Replace(".", ",");
+                        var htmlPrice = elem.QuerySelector(".product-price").Attributes["content"].Value;
                         product.Price = Convert.ToDouble(htmlPrice);
                         product.Img = elem.QuerySelector(".thumbnail-container > a > img").Attributes["src"].Value;
                         product.Link = elem.QuerySelector(".product-title > a")

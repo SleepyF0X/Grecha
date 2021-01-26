@@ -47,6 +47,9 @@ namespace DAL.DbContext
                     await context.SaveChangesAsync();
                     await ParseProducts(context, "Fozzy", "Крупа+гречневая", new FozzyParser());
                     await context.SaveChangesAsync();
+                    var muka = await context.Products.FirstOrDefaultAsync(p => p.Name.Contains("Мука"));
+                    context.Products.Remove(muka);
+                    await context.SaveChangesAsync();
                 }
 
                

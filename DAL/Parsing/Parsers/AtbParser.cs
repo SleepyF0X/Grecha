@@ -30,8 +30,8 @@ namespace DAL.Parsing.Parsers
                 product.Link = ShopUrl + link;
                 product.Name = htmlNode.QuerySelector("div.product-detail > a > div").InnerText;
                 var price = htmlNode.QuerySelector(".price").InnerText;
-                price = price.Insert(price.Length - 2, ",");
-                product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
+                price = price.Insert(price.Length - 2, ".");
+                product.Price = double.Parse(price, CultureInfo.InvariantCulture);
                 product.TradeMark = GetTrademark(ShopUrl + link);
                 var imgSrc = htmlNode.QuerySelector(".img-fluid").Attributes["src"].Value;
                 product.Img = imgSrc;

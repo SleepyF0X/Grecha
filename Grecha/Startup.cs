@@ -21,7 +21,7 @@ namespace Grecha
         private IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("Docker");
+            var connectionString = Configuration.GetConnectionString("DockerCompose");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
             services.AddTransient<IOptionsBuilderService<AppDbContext>, OptionsBuilderService<AppDbContext>>();
