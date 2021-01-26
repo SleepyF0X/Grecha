@@ -35,6 +35,7 @@ namespace Grecha
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseStaticFiles();
             app.UseRouting();
 

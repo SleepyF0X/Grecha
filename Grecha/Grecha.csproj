@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Dockerfile~RF36165bf.TMP" />
     <None Remove="Startup.cs~RF12441fe.TMP" />
   </ItemGroup>
 
