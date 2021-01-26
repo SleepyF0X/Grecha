@@ -20,4 +20,4 @@ When you start the application, you will be taken to the main page with products
  - You can view specific store products by switching between them with the help of the sidebar menu. To open it press the "bars" icon that is placed at the left in the navbar.
 
 ## P.S.
-Sample project is running at: https://grechaf0x.southcentralus.azurecontainer.io
+Sample project is running at: http://grecha.southcentralus.azurecontainer.io/
