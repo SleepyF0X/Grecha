@@ -36,7 +36,7 @@ namespace DAL.Parsing.Parsers
                 price = price.Insert(price.Length - 2, ",");
                 product.Price = double.Parse(price, NumberStyles.AllowDecimalPoint);
                 product.TradeMark = GetTrademark(ShopUrl + link);
-                var styleStr = htmlNode.QuerySelector(".bg-size").GetAttributeValue("style", string.Empty);
+                var styleStr = htmlNode.QuerySelector(".img-fluid").Attributes["src"].Value;
                 styleStr = styleStr.Substring(styleStr.IndexOf("\"", StringComparison.Ordinal));
                 styleStr = styleStr.Substring(0, styleStr.IndexOf("\"", StringComparison.Ordinal));
                 product.Img = styleStr;
