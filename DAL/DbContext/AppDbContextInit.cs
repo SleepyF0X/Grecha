@@ -45,7 +45,7 @@ namespace DAL.DbContext
                     await context.SaveChangesAsync();
                     await ParseProducts(context, "Novus", "Крупа гречневая", new NovusParser());
                     await context.SaveChangesAsync();
-                    await ParseProducts(context, "Fozzy", "Крупа гречневая", new FozzyParser());
+                    await ParseProducts(context, "Fozzy", "Крупа+гречневая", new FozzyParser());
                     await context.SaveChangesAsync();
                 }
 
