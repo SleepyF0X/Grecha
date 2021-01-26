@@ -23,7 +23,7 @@ namespace DAL.Parsing.Parsers
             foreach (var htmlNode in lis)
             {
                 Product product = new Product();
-                product.Shop = "novus";
+                product.Shop = "Novus";
                 var link = htmlNode.QuerySelector("div.products-box__list-item > a")
                     .GetAttributeValue("href", string.Empty);
                 product.Link = link;

@@ -17,17 +17,16 @@
 </div>
 <div id="mySidenav" class="sidenav">
     <div class="d-flex justify-content-around align-items-center">
-        <h2 class="mb-0 text-muted">Categories</h2>
+        <h2 class="mb-0 text-muted">Stores</h2>
         <span class="closebtn" onclick="closeNav()">&times;</span>
     </div>
-    <a href="#">Grecha</a>
-    <a href="#">Ne grecha</a>
-    <a href="#">Kolya Torch</a>
-    <a href="#">Gde Parser</a>
+    <a asp-action="GetProducts" asp-route-storeName="ATB" asp-controller="Home">ATB</a>
+    <a asp-action="GetProducts" asp-route-storeName="Fozzy" asp-controller="Home">Fozzy</a>
+    <a asp-action="GetProducts" asp-route-storeName="Novus" asp-controller="Home">Novus</a>
 </div>
 <div class="navbar navbar-expand navbar-dark bg-primary d-flex justify-content-center fixed-top row align-items-center">
     <div class="col-2 d-flex justify-content-center align-items-center">
-        <i class="fa fa-bars fa-2x mr-2" aria-hidden="true" onclick="openNav()"></i> <span class="d-none d-md-inline">Categories</span>
+        <i class="fa fa-bars fa-2x mr-2" aria-hidden="true" onclick="openNav()"></i> <span class="d-none d-md-inline">Stores</span>
     </div>
     <div class="col-8 text-center">
         <h1 class="text-white mb-0" href="#">Grecha</h1>

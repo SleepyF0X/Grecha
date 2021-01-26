@@ -26,9 +26,6 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("IdFromStore")
-                        .HasColumnType("int");
-
                     b.Property<string>("Img")
                         .HasColumnType("nvarchar(max)");
 

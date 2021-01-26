@@ -41,35 +41,41 @@ namespace DAL.DbContext
                 var weekExpired = storeParsingDates.Any(e => (e.LastParsingDate - DateTimeOffset.UtcNow).Days < 0);
                 if (!productsExist || weekExpired)
                 {
-                    await ParseATBProducts(context);
+                    //await ParseProducts(context, "ATB", cereals, new AtbParser());
+                    //await context.SaveChangesAsync();
+                    await ParseProducts(context, "Novus", "Крупа", new NovusParser());
+                    await context.SaveChangesAsync();
+                    await ParseProducts(context, "Fozzy", "Крупа гречневая", new FozzyParser());
+                    await context.SaveChangesAsync();
                 }
 
-                await context.SaveChangesAsync();
+               
                 Thread.Sleep(300000);
             }
         }
 
-        private static async Task ParseATBProducts(AppDbContext context)
+        private static async Task ParseProducts(AppDbContext context, string shopName, string productName,
+            IParser parser)
         {
-            var productsFromATBToDelete =
-                await context.Products.Where(e => e.Shop.ToLower().Equals("ATB".ToLower())).ToListAsync();
-            if (productsFromATBToDelete.Count != 0)
+            var productsToDelete =
+                await context.Products.Where(e => e.Shop.ToLower().Equals(shopName.ToLower())).ToListAsync();
+            if (productsToDelete.Count != 0)
             {
-                context.Products.RemoveRange(productsFromATBToDelete);
+                context.Products.RemoveRange(productsToDelete);
             }
 
-            _parserContext.SetParsingStrategy(new AtbParser());
-            var productsFromATBToAdd = _parserContext.Parse("крупа", 20, null);
-            await context.Products.AddRangeAsync(productsFromATBToAdd);
+            _parserContext.SetParsingStrategy(parser);
+            var productsToAdd = _parserContext.Parse(productName, 20, null);
+            await context.Products.AddRangeAsync(productsToAdd);
             var lastParsingDate = await context.StoreParsingDates
-                .Where(e => e.StoreName.ToLower().Equals("ATB".ToLower()))
+                .Where(e => e.StoreName.ToLower().Equals(shopName.ToLower()))
                 .FirstOrDefaultAsync();
             if (lastParsingDate != null)
             {
                 context.Remove(lastParsingDate);
             }
 
-            var parsingTime = new StoreParsingDate {LastParsingDate = DateTimeOffset.UtcNow, StoreName = "ATB"};
+            var parsingTime = new StoreParsingDate {LastParsingDate = DateTimeOffset.UtcNow, StoreName = shopName};
             await context.StoreParsingDates.AddAsync(parsingTime);
         }
     }
