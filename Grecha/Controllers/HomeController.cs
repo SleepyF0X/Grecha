@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DAL.DbContext;
+using Grecha.Helpers;
 
 namespace Grecha.Controllers
 {
@@ -28,9 +29,8 @@ namespace Grecha.Controllers
             {
                 return View("StoreNotFound", null);
             }
-            var storeExists =
-                await _context.StoreParsingDates.AnyAsync(e => e.StoreName.ToLower().Equals(storeName.ToLower()));
-            if (!storeExists)
+            else if (UsedStores.Stores.FirstOrDefault(usedStoreName =>
+                usedStoreName.ToLower().Equals(storeName.ToLower())) == null)
             {
                 return View("StoreNotFound", storeName);
             }
