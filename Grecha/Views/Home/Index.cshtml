@@ -29,7 +29,6 @@
                 <option value="" disabled selected hidden>Select your option</option>
                 <option value="1" id="price">Price to lower</option>
                 <option value="2" id="price reverse">Price to upper</option>
-                <option value="3" id="name">Name</option>
             </select>
         </div>
     </div>
@@ -83,14 +82,6 @@
                 var price1 = $('div.price', a).text(),
                     price2 = $('div.price', b).text();
                 if (price1 > price2) return 1;
-                else return -1;
-            });
-            return items;
-        } else if (tag == 'name') {
-            var items = $('div.item').sort(function(a, b) {
-                var name1 = $.trim($('div.name', a).text()),
-                    name2 = $.trim($('div.name', b).text());
-                if (name1 < name2) return 1;
                 else return -1;
             });
             return items;
