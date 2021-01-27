@@ -16,7 +16,7 @@
 When you start the application, you will be taken to the main page with products. **At first launch you will need to wait for a while** because of data being parsed.
 
  - Groats is parsed from three stores: ATB, Fozzy, Novus.
- - There is a filter on the main page. With the help of it, you can sort groats by price or name.
+ - There is a filter on the main page. With the help of it, you can sort groats by price.
  - You can view specific store products by switching between them with the help of the sidebar menu. To open it press the "bars" icon that is placed at the left in the navbar.
 
 ## P.S.
