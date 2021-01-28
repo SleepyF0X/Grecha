@@ -14,7 +14,10 @@
 :warning: **Problems with Nuget 26.01.2021 - XX.XX.XXXX**: nuget certificate errors in sdk:5.0-buster-slim. To solve the problem change:  
 **`mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim`**  ---> **`mcr.microsoft.com/dotnet/aspnet:5.0-focal`**  
 **`mcr.microsoft.com/dotnet/sdk:5.0-buster-slim`** --->  **`mcr.microsoft.com/dotnet/sdk:5.0-focal`**  
-In the **/Grecha/Dockerfile** 
+In the **/Grecha/Dockerfile**  
+Proofs:  
+https://github.com/NuGet/Home/issues/10491  
+https://github.com/dotnet/sdk/issues/15510
 
 ## Using the project
 When you start the application, you will be taken to the main page with products. **At first launch you will need to wait for a while** because of data being parsed.
